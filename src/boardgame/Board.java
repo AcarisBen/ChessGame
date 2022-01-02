@@ -2,20 +2,20 @@ package boardgame;
 
 public class Board {
 
-	private Integer rows;
-	private Integer columns;
-	private Piece [][] pieces; //Matriz de peças
+	private int rows;
+	private int columns;
+	private Piece[][] pieces; //Matriz de peças
 	
 	public Board() {
 	}
 
-	public Board(Integer rows, Integer columns) {
+	public Board(int rows, int columns) {
 		this.rows = rows;
 		this.columns = columns;
 		pieces = new Piece[rows][columns];
 	}
 
-	public Integer getRows() {
+	public int getRows() {
 		return rows;
 	}
 
@@ -23,11 +23,11 @@ public class Board {
 		this.rows = rows;
 	}
 
-	public Integer getColumns() {
+	public int getColumns() {
 		return columns;
 	}
 
-	public void setColumns(Integer columns) {
+	public void setColumns(int columns) {
 		this.columns = columns;
 	}
 

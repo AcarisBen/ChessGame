@@ -5,7 +5,7 @@ import chess.ChessPiece;
 
 public class UI {
 	
-	public static void printBoard(ChessPiece [][] pieces) { // Método para imprimir as peças da partida.
+	public static void printBoard(ChessPiece[][] pieces) { // Método para imprimir as peças da partida.
 	for (int i =0; i<pieces.length; i++) { 
 		System.out.print((8 - i) + " "); // imprimi primeiro os números do tabuleiro
 		for (int j=0; j<pieces.length; j++) { // imprimi a peça.
