@@ -13,7 +13,7 @@ public class UI {
 		}
 		System.out.println(); // leva para a próxima linha.
 	}
-	System.out.println("  a b c d e f g h"); // imprimi a parte de baixo do tabuleiro
+	System.out.println("  a  b  c  d  e  f  g  h"); // imprimi a parte de baixo do tabuleiro
 	}
 	
 	private static void printPiece(ChessPiece piece) { // Método para imprimir uma única peça.
