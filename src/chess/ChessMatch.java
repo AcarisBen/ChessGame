@@ -31,9 +31,9 @@ public class ChessMatch { // Regras do jogo
 	}
 	
 	private void initialSetup() { //Assim que iniciará no tabuleiro
-		board.placePiece(new Rook(board, Color.WHITE), new Position(2, 1));
-		board.placePiece(new King(board, Color.BLACK), new Position(0, 4));
-		board.placePiece(new King(board, Color.WHITE), new Position(7, 4));
+		board.placePiece(new Rook(board, Color.WHITE), new Position(2, 1)); // Coloca a torre branca na posição
+		board.placePiece(new King(board, Color.BLACK), new Position(0, 4)); // Coloca a rei preto na posição
+		board.placePiece(new King(board, Color.WHITE), new Position(7, 4)); // Coloca o rei branco na posição
 	}
 }
 
