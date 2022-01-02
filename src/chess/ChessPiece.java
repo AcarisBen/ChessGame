@@ -18,8 +18,4 @@ public class ChessPiece extends Piece {
 	public Color getColor() { // Não tem setColor por que não pode deixar alterar a cor.
 		return color;
 	}
-
-	
-
-	
 }
