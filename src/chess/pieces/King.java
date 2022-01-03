@@ -13,6 +13,6 @@ public class King extends ChessPiece { // Classe que extede a classe "ChessPiece
 
 	@Override
 	public String toString() { // Deve imprimir na tela a letra correspondente da Rei
-		return "K ";
+		return "K";
 	}
 }

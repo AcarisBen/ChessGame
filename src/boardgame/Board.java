@@ -53,7 +53,7 @@ public class Board {
 	}
 
 	public boolean positionExists (Position position) { // sobrecarga baseada na "positionExists" acima
-		return positionExists(position.getRow(), position.getColumn()); // texta se a posição existe.
+		return positionExists(position.getRow(), position.getColumn()); // testa se a posição existe.
 	}
 	
 	public boolean thereIsAPiece(Position position) { //texta se há uma peça na posição "Position"

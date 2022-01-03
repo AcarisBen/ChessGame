@@ -12,6 +12,6 @@ public class Rook extends ChessPiece { // Classe que extede da classe "ChessPiec
 
 	@Override
 	public String toString() { // Deve imprimir na tela a letra correspondente da Torre
-		return "R ";
+		return "R";
 	}
 }
