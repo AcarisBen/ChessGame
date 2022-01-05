@@ -26,7 +26,11 @@ public class Program {
 				System.out.println();
 				System.out.print("Source: ");
 				ChessPosition source = UI.readChessPosition(sc); // Digitar a posição de origem
-
+				
+				boolean[][] possibleMoves = chessMatch.possibleMoves(source); // Declara uma matriz booleana para receber o método "possbleMoves"
+				UI.clearScreen(); //Limpa a tela
+				UI.printBoard(chessMatch.getPieces(), possibleMoves); // Imprime uma outra versão do tabuleiro, agora colorindo as posições para onde a peca pode se mover.
+				
 				System.out.println();
 				System.out.print("Target: ");
 				ChessPosition target = UI.readChessPosition(sc); // Digitar a posição de destino

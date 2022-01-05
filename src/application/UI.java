@@ -55,7 +55,24 @@ public class UI {
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print((8 - i) + "  "); // imprimi primeiro os números do tabuleiro
 			for (int j = 0; j < pieces.length; j++) { // imprimi a peça.
-				printPiece(pieces[i][j]);
+				printPiece(pieces[i][j], false); // imprime as peças nas posições, mas sem o fundo colorido
+			}
+			System.out.print(" " + (8 - i));
+						
+			System.out.println(); // leva para a próxima linha.
+		
+		}
+		System.out.println();
+		System.out.println("   a b c d e f g h"); // imprimi a parte de baixo do tabuleiro
+	}
+	
+	public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) { // Sobrecarga do métoda acima, mas com a matriz booleana "possibleMoves" para mostrar as possíveis posições da peça selecionada.
+		System.out.println("   a b c d e f g h");
+		System.out.println();
+		for (int i = 0; i < pieces.length; i++) {
+			System.out.print((8 - i) + "  "); // imprimi primeiro os números do tabuleiro
+			for (int j = 0; j < pieces.length; j++) { // imprimi a peça.
+				printPiece(pieces[i][j], possibleMoves[i][j]); //imprime as peças nas posições, mas com o fundo colorido indicando as futuras posições possíveis
 			}
 			System.out.print(" " + (8 - i));
 						
@@ -66,22 +83,24 @@ public class UI {
 		System.out.println("   a b c d e f g h"); // imprimi a parte de baixo do tabuleiro
 	}
 
-	private static void printPiece(ChessPiece piece) {
+	private static void printPiece(ChessPiece piece, boolean background) { // Método para imprimir a peça no tabuleiro.
+		//Baseado na peça "Piece" da classe "ChessPiece" e no "boolean" para pintar as futuras posições possíveis da peça selecionada
 		
-    	if (piece == null) {
-            System.out.print("-");
+		if (background) { //Testa se a variável booleana "background" é verdadeira
+				System.out.print(ANSI_BLUE_BACKGROUND); //Pinta a cor do fundo da tela de rosa
+			} 
+				
+    	if (piece == null) { // Se não ter uma peça no tabuleiro
+            System.out.print("-" + ANSI_RESET); //Imprime  "-" e Reseta a cor original
         }
         else {
-            if (piece.getColor() == Color.WHITE) {
-                System.out.print(ANSI_WHITE + piece + ANSI_RESET);
+            if (piece.getColor() == Color.WHITE) { //pinta as pecas de branco
+                System.out.print(ANSI_WHITE + piece + ANSI_RESET); //Reseta a cor original
             }
             else {
-                System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
+                System.out.print(ANSI_YELLOW + piece + ANSI_RESET); //Pinta as peças de amarelo. e depois Reseta a cor original
             }
         }
         System.out.print(" ");
-	
 	}
-	
-	
 }

@@ -56,7 +56,7 @@ public class Rook extends ChessPiece { // Classe que extede da classe "ChessPiec
 		p.setValues(position.getRow() + 1, position.getColumn()); //Pega a linha abaixo da peça, na mesma coluna
 		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) { // Enquanto a posição "p" estiver vaga e não ter peça lá,
 			mat [p.getRow()][p.getColumn()] = true; // MARCA COMO VERDADEIRO A POSIÇÃO DA MATRIZ, DIZENDO AO PROGRAMA QUE A PEÇA PODE IR PARA LA,
-			p.setRow(p.getRow() - 1); //Repete andar para baixo na mesma coluna enquanto existir casa vazias.
+			p.setRow(p.getRow() + 1); //Repete andar para baixo na mesma coluna enquanto existir casa vazias.
 		}
 		if (getBoard().positionExists(p) && isThereOpponentPiece(p)) {  // Testa se existe mais uma casa pra cima vazia ou com uma peça adversária. Se sim, deve ser marcada a posição como verdadeiro. 
 			mat [p.getRow()][p.getColumn()] = true; // MARCA COMO VERDADEIRO A POSIÇÃO DA MATRIZ, DIZENDO AO PROGRAMA QUE A PEÇA PODE IR PARA LA.
