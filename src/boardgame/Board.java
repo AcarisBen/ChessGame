@@ -48,6 +48,19 @@ public class Board {
 		//que é acessada livremente, mesmo sendo protected (classe Piece), por ser do mesmo pacote "boardgame."
 	}
 	
+	public Piece removePiece(Position position) { //Tira a peça da posição que ela está
+		if (!positionExists(position)) {
+			throw new BoardException("Position not on the board"); // exceção caso a posição informada não exista
+			}
+		if (piece(position) == null) { //se isso ocorrer, não existe nenhuma peça nessa posição.
+			return null;
+		}
+		Piece aux = piece(position); //Pegar a peça selecionada.
+		aux.position = null; //Tira a peça do tabuleiro, sem posição
+		pieces[position.getRow()][position.getColumn()] = null; // na matriz de peça, na posição onde está removendo a peça, agora é nulo (sem peça)
+		return aux; // contém a peça que foi retirada
+	}
+	
 	private boolean positionExists(int row, int column) { // mais fácil de testar com linha e coluna dentro da classe
 		return row >= 0 && row < rows && column >= 0 && column < columns; // condição para ver se uma posição existe, dentro do tabuleiro.
 	}
