@@ -51,6 +51,9 @@ public class ChessMatch { // Regras do jogo
 			throw new ChessException("There is no piece on source position"); //thereIsAPiece lança uma BoardException e aqui é uma ChessException, que também é uma BoardEception (Mais específica).
 																			  // Para facilitar para o programa, troca-se a "RuntimeException" na "ChessException" por "BoardException"
 		}
+		if (!board.piece(position).IsThereAnyPossibleMove()) { // Testa se existe movimentos possíveis para peça. Se não ter movimentos (a peça estiver presa) deve retornar uma exceção.
+			throw new ChessException("There is no piece on source position");
+		}
 	}
 	
 	private void placeNewPiece(char column, int row, ChessPiece piece) { //Operação de colocar as peças. Recebe as coordenadas do xadrez.
