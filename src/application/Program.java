@@ -18,7 +18,7 @@ public class Program {
 		while (true) { // REPETE indefinitamente,
 			try {
 				UI.clearScreen();
-
+				System.out.println();
 				UI.printBoard(chessMatch.getPieces()); // Função para imprimir as peças e o tabuleiro da partida.
 				// UI = classe user interface. printBoard = método da classe UI para imprimir as
 				// peças da partida

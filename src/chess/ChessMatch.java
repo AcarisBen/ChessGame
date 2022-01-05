@@ -35,7 +35,8 @@ public class ChessMatch { // Regras do jogo
 	// 	Move a peça da posição de origem para a posição de destino e se for o caso, tambem a posição de captura
 		Position source = sourcePosition.toPosition(); //Converte posiçoes de origem para posições da matriz		
 		Position target = targetPosition.toPosition(); //Converte posiçoes de destino para posições da matriz		
-		validateSourcePosition(source); // Valida se a posição de origem havia uma peça. Chama o método validateSourcePosition
+		validateSourcePosition(source); // Valida se a posição de origem havia uma peça. Chama o método "validateSourcePosition"
+		validateTargetPosition(source, target); // Valida se a posição de destino, para saber se o programa está colocando a peça na posição final corretamente. Chama o método "validateTargetPosition"
 		Piece capturedPiece = makeMove(source, target); //Realiza o movimento da peça, baseado na posição de origem e destino.
 		return (ChessPiece) capturedPiece; // Retorna a peça capturada, com DownCasting da peça capturada do tipo "ChessPiece"
 		}
@@ -56,6 +57,11 @@ public class ChessMatch { // Regras do jogo
 		}
 	}
 	
+	private void validateTargetPosition(Position source, Position target) { // Valida se a posição de destino é um movimento possível em relação à peça que está na posição de origem
+		if (!board.piece(source).possibleMove(target)) { // Testa se o movimento da peça na posição de destino não é um movimento possível, em relação à posição de origem.
+			throw new ChessException("The chosen piece can not move to target position."); // Caso seja um movimento não possível, deve lançar a exceção.
+		}
+	}
 	private void placeNewPiece(char column, int row, ChessPiece piece) { //Operação de colocar as peças. Recebe as coordenadas do xadrez.
 		board.placePiece(piece, new ChessPosition(column, row).toPosition()); //instancia a peça na posição baseada da matriz.
 	}

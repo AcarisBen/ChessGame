@@ -17,7 +17,7 @@ public class Position {
 		return row;
 	}
 
-	public void setRow(Integer row) {
+	public void setRow(Integer row) { // Atualiza as linhas de uma posição
 		this.row = row;
 	}
 
@@ -25,11 +25,13 @@ public class Position {
 		return column;
 	}
 
-	public void setColumn(Integer column) {
+	public void setColumn(Integer column) { // Atualiza as colunas  de uma posição
 		this.column = column;
 	}
 
-	public void setValues (Integer row, Integer column) {
+	public void setValues (Integer row, Integer column) { // Atualiza os valores de uma posição
+	this.row = row;
+	this.column = column;
 	}
 
 	@Override
