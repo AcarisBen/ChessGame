@@ -8,13 +8,24 @@ import chess.pieces.Rook;
 
 public class ChessMatch { // Regras do jogo
 
+	private int turn; 
+	private Color currentPlayer;
 	private Board board;
 	
 	public ChessMatch() { // Quem sabe a dimensão do tabuleiro é a class "ChessMatch"
 		board = new Board(8, 8); // Inicia a partida com este tabuleiro.
+		turn = 1; // O jogo inicia no turno 1.
+		currentPlayer = Color.WHITE; // O primeiro jogador a iniciar o jogo é o branco
 		initialSetup(); // Chama a configuração inicial do tabuleiro
 		}
+	
+	public int getTurn() {
+		return turn;
+	}
 
+	public Color getCurrentPlayer() {
+		return currentPlayer;
+	}
 	public ChessPiece[][] getPieces() { // Retorna a matriz de peças de xadrez correspondente a partida.
 	
 	// O "Board" tem uma matriz do tipo "Piece", mas o método retorna o "ChessPiece" (Camada de xadrez).
@@ -44,6 +55,7 @@ public class ChessMatch { // Regras do jogo
 		validateSourcePosition(source); // Valida se a posição de origem havia uma peça. Chama o método "validateSourcePosition"
 		validateTargetPosition(source, target); // Valida se a posição de destino, para saber se o programa está colocando a peça na posição final corretamente. Chama o método "validateTargetPosition"
 		Piece capturedPiece = makeMove(source, target); //Realiza o movimento da peça, baseado na posição de origem e destino.
+		nextTurn(); // Chama o próximo turno.
 		return (ChessPiece) capturedPiece; // Retorna a peça capturada, com DownCasting da peça capturada do tipo "ChessPiece"
 		}
 	
@@ -53,10 +65,15 @@ public class ChessMatch { // Regras do jogo
 		board.placePiece(p, target); // Coloca a peça "p" na posição da peça de destino.
 		return capturedPiece; //retorna a peça capturada.
 	}
+	
 	private void validateSourcePosition(Position position) { // Exceção para testar se existe uma peça na posição de origem 
 		if (!board.thereIsAPiece(position)) {
 			throw new ChessException("There is no piece on source position"); //thereIsAPiece lança uma BoardException e aqui é uma ChessException, que também é uma BoardEception (Mais específica).
 																			  // Para facilitar para o programa, troca-se a "RuntimeException" na "ChessException" por "BoardException"
+		}
+		if (currentPlayer != ((ChessPiece)board.piece(position)).getColor()) { // Verifica se o turno pertence a cor da peça selecionada no turno.
+			throw new ChessException("Wrong color piece selected. This turn belongs to the other player"); //Pega a peça do tabuleiro na posição "position", faz um DownCasting para "ChessPiece" e testa a cor dela.
+			//Se a cor for diferente da cor do jogador do turno atual, então seria uma peça do jogador adversário 
 		}
 		if (!board.piece(position).IsThereAnyPossibleMove()) { // Testa se existe movimentos possíveis para peça. Se não ter movimentos (a peça estiver presa) deve retornar uma exceção.
 			throw new ChessException("There is no piece on source position");
@@ -67,6 +84,12 @@ public class ChessMatch { // Regras do jogo
 		if (!board.piece(source).possibleMove(target)) { // Testa se o movimento da peça na posição de destino não é um movimento possível, em relação à posição de origem.
 			throw new ChessException("The chosen piece can not move to target position."); // Caso seja um movimento não possível, deve lançar a exceção.
 		}
+	}
+	
+	private void nextTurn() {
+		turn ++; //Incrementa o número de turnos
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE; // Alterna os jogadores
+		
 	}
 	private void placeNewPiece(char column, int row, ChessPiece piece) { //Operação de colocar as peças. Recebe as coordenadas do xadrez.
 		board.placePiece(piece, new ChessPosition(column, row).toPosition()); //instancia a peça na posição baseada da matriz.

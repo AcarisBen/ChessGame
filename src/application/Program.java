@@ -19,7 +19,8 @@ public class Program {
 			try {
 				UI.clearScreen();
 				System.out.println();
-				UI.printBoard(chessMatch.getPieces()); // Função para imprimir as peças e o tabuleiro da partida.
+				UI.printMatch(chessMatch); //Imprime o tabuleiro, o turno e a vez dedeterminado jogador
+				// UI.printBoard(chessMatch.getPieces()); // Antes era uma Função para imprimir as peças e o tabuleiro da partida.
 				// UI = classe user interface. printBoard = método da classe UI para imprimir as
 				// peças da partida
 
