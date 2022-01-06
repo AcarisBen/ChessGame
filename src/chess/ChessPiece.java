@@ -16,6 +16,10 @@ public abstract class ChessPiece extends Piece { //Ao transformar o Piece em abs
 		return color;
 	}
 
+	public ChessPosition getChessPosition() { 
+		return ChessPosition.fromPosition(position); // Usa o método estático "fromPosition" que converte uma posição "position" herdada da classe "Piece" para "ChessPosition"
+		
+	}
 	protected boolean isThereOpponentPiece(Position position) { //isThereOpponentPiece A peça deve saber se existe uma peça adversária em uma dada posição.
 		//Este método será acessível por todas as peças, por isso que está nesta classe.
 		ChessPiece p = (ChessPiece)getBoard().piece(position); //Verifica se tem uma peça adversária na posição. Deve fazer um Downcasting para "ChessPiece"

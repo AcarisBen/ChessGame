@@ -59,6 +59,10 @@ public class UI {
 		printCapturedPieces(captured);
 		System.out.println(" Turn: " + chessMatch.getTurn()); //Informa o turno que está
 		System.out.println(" Waiting player: " + chessMatch.getCurrentPlayer()); // Mensagem que está esperando o jogador jogar.
+		if (chessMatch.getCheck()) { // Testa se a partida esta em xeque.
+			System.out.println();
+			System.out.println(" YOU ARE IN CHECK!"); // Acrescenta a informação de xeque
+		}
 	}
 		
 	public static void printBoard(ChessPiece[][] pieces) { // Método para imprimir as peças da partida.

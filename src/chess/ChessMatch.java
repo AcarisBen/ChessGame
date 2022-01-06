@@ -2,6 +2,8 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import boardgame.Board;
 import boardgame.Piece;
@@ -14,6 +16,7 @@ public class ChessMatch { // Regras do jogo
 	private int turn; 
 	private Color currentPlayer;
 	private Board board;
+	private boolean check;
 	
 	private List<Piece> piecesOnTheBoard = new ArrayList<>(); //Instacia uma lista para controlar as peças restantes do tabuleiro
 	private List<Piece> capturedPieces = new ArrayList<>(); // Instancia uma lista para controlar as peças capturadas.
@@ -23,6 +26,7 @@ public class ChessMatch { // Regras do jogo
 		board = new Board(8, 8); // Inicia a partida com este tabuleiro.
 		turn = 1; // O jogo inicia no turno 1.
 		currentPlayer = Color.WHITE; // O primeiro jogador a iniciar o jogo é o branco
+		check = false; // Por padrão, um boolean sempre é falso, mas pode-se enfatizar no constructor
 		initialSetup(); // Chama a configuração inicial do tabuleiro
 		}
 	
@@ -32,6 +36,10 @@ public class ChessMatch { // Regras do jogo
 
 	public Color getCurrentPlayer() {
 		return currentPlayer;
+	}
+	
+	public boolean getCheck () { // expõe a propriedade de xeque para que possa ser alcançado pelo programa principal 
+		return check;
 	}
 	public ChessPiece[][] getPieces() { // Retorna a matriz de peças de xadrez correspondente a partida.
 	
@@ -62,6 +70,14 @@ public class ChessMatch { // Regras do jogo
 		validateSourcePosition(source); // Valida se a posição de origem havia uma peça. Chama o método "validateSourcePosition"
 		validateTargetPosition(source, target); // Valida se a posição de destino, para saber se o programa está colocando a peça na posição final corretamente. Chama o método "validateTargetPosition"
 		Piece capturedPiece = makeMove(source, target); //Realiza o movimento da peça, baseado na posição de origem e destino.
+		
+		if (testCheck(currentPlayer)) { //Se o jogador lançou um movimento e ficou em xeuqe, deve desfazer o movimento e lançar uma exceção
+			undoMove(source, target, capturedPiece);// Testar se o movimento deixou o jogador atual em xeque
+			throw new ChessException("You putted yourself in check!");
+		}
+		
+		check = (testCheck(opponent(currentPlayer))) ? true : false; // Testa se o opponent está em xeque.
+		// se o teste de xeque do oponente for "true" então o opponente está em xeque, se não retorna "false"
 		nextTurn(); // Chama o próximo turno.
 		return (ChessPiece) capturedPiece; // Retorna a peça capturada, com DownCasting da peça capturada do tipo "ChessPiece"
 		}
@@ -77,6 +93,17 @@ public class ChessMatch { // Regras do jogo
 		}
 		
 		return capturedPiece; //retorna a peça capturada.
+	}
+	
+	private void undoMove(Position source, Position target, Piece capturedPiece) { //Método para desfazer o movimento makeMove, para não por o rei em xeque.
+		Piece p = board.removePiece(target); // Cria uma peça para remove-la da posição de destino
+		board.placePiece(p, source); // coloca a peça para a posição de destino
+		
+		if (capturedPiece != null) { // uma peça tinha sido capturada,
+			board.placePiece(capturedPiece, target); // Volta a peça pro tabuleiro na posição de destino
+			capturedPieces.remove(capturedPiece); // Tira a peça da lista de pecças capturadas.
+			piecesOnTheBoard.add(capturedPiece); // Coloca a peça na lista de peças no tabuleiro.
+		}
 	}
 	
 	private void validateSourcePosition(Position position) { // Exceção para testar se existe uma peça na posição de origem 
@@ -104,6 +131,32 @@ public class ChessMatch { // Regras do jogo
 		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE; // Alterna os jogadores
 		
 	}
+	
+	private Color opponent (Color color) { // Devolve o oponente de uma cor.
+		return (color == Color.WHITE) ? Color.BLACK : Color.WHITE; // Se a cor que passou como argumento for branco, retorna a cor preta, se não retorna a cor branca
+	}
+	
+	private ChessPiece king (Color color) { // Método para localizar o rei de uma determinada cor
+		List < Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());//Procura na lista de peças em jogo qual é o rei dessa cor.
+		for (Piece p : list) {//Pra cada peça "p" na lista "List"
+			if (p instanceof King) { // se a peça "p" é uma instancia do Rei
+				return (ChessPiece)p; // // retorna o Rei (DownCasting) para "ChessPiece"
+			} //O compilador pede uma exceçção caso seja percorrido a lista e não encontre o rei
+		} // Por isso, é lançada a exceção abaixo. porém não é para occorer este tipo de erro.
+		throw new IllegalStateException("There is no " + color + " king on the board");
+	}
+	private boolean testCheck (Color color) { // Método pra testar se um rei de uma cor está em xeque, tem que percorrer todas as peças adversárias e ver para cada uma das peças se existe um movimento possível dela que cai na casa do rei. Se isso acontecer, o rei está em xeque.
+		Position kingPosition = king(color).getChessPosition().toPosition(); //Pega a posição do rei "kingPosition" e chama o método "king". Pega a posição do rei em formato de matriz
+		List <Piece> opponentPieces = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == opponent(color)).collect(Collectors.toList());// Cria uma lista com as peças no tabuleiro com as cores do oponente do rei
+		for (Piece p : opponentPieces) {
+			boolean [][] mat = p.possibleMoves(); // Pega a matriz de movimentos possíveis para a peça adversária "p".
+			if (mat [kingPosition.getRow()] [kingPosition.getColumn()]) { // se na matriz, a posição correspondente à posição do rei for "true", o rei está em xeque.
+				return true; // deve retornar "true"
+			}
+		}
+		return false; // se esgotar todas as peças adversárias e nenhuma dessas peças tiver na matriz de movimentos possíveis, a posição do rei marcada como "true", o rei não está em xeque.
+	}
+	
 	private void placeNewPiece(char column, int row, ChessPiece piece) { //Operação de colocar as peças. Recebe as coordenadas do xadrez.
 		board.placePiece(piece, new ChessPosition(column, row).toPosition()); //instancia a peça na posição baseada da matriz.
 		piecesOnTheBoard.add(piece); // Adiciona uma peça para a lista "piecesOnTheBoard"

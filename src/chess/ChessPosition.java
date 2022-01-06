@@ -29,7 +29,7 @@ public class ChessPosition { // Passa pro programa para ser informado uma letra 
 	}
 
 	protected static ChessPosition fromPosition(Position position) {// Dada a posição da matriz deve converter para a posição do xadrez 
-		return new ChessPosition((char)('a' - position.getColumn()), 8 - position.getRow()); //casting pra "char"(por não ser automático) e pega a posição da matriz e converte para a posição do xadrez
+		return new ChessPosition((char)('a' + position.getColumn()), 8 - position.getRow()); //casting pra "char"(por não ser automático) e pega a posição da matriz e converte para a posição do xadrez
 	}
 
 	@Override
