@@ -1,7 +1,10 @@
 package application;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import chess.ChessMatch;
 import chess.ChessPiece;
@@ -50,18 +53,19 @@ public class UI {
 		}
 	}
 	
-	public static void printMatch(ChessMatch chessMatch) {//Imprime não só o tabuleiro, mas imprime agora toda a partida.
+	public static void printMatch(ChessMatch chessMatch, List<ChessPiece> captured) {//Imprime não só o tabuleiro, mas imprime agora toda a partida.
 		printBoard(chessMatch.getPieces()); //Imprime o tabuleiro
 		System.out.println();//Pula linha
-		System.out.println("Turn: " + chessMatch.getTurn()); //Informa o turno que está
-		System.out.println("Waiting player: " + chessMatch.getCurrentPlayer()); // Mensagem que está esperando o jogador jogar.
+		printCapturedPieces(captured);
+		System.out.println(" Turn: " + chessMatch.getTurn()); //Informa o turno que está
+		System.out.println(" Waiting player: " + chessMatch.getCurrentPlayer()); // Mensagem que está esperando o jogador jogar.
 	}
 		
 	public static void printBoard(ChessPiece[][] pieces) { // Método para imprimir as peças da partida.
-		System.out.println("   a b c d e f g h");
+		System.out.println("   a b c d e f g h"); //Imprime a parte de cima do tabuleiro
 		System.out.println();
 		for (int i = 0; i < pieces.length; i++) {
-			System.out.print((8 - i) + "  "); // imprimi primeiro os números do tabuleiro
+			System.out.print(" " + (8 - i) + "  "); // imprimi primeiro os números do tabuleiro
 			for (int j = 0; j < pieces.length; j++) { // imprimi a peça.
 				printPiece(pieces[i][j], false); // imprime as peças nas posições, mas sem o fundo colorido
 			}
@@ -75,10 +79,11 @@ public class UI {
 	}
 	
 	public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) { // Sobrecarga do métoda acima, mas com a matriz booleana "possibleMoves" para mostrar as possíveis posições da peça selecionada.
-		System.out.println("   a b c d e f g h");
+		System.out.println();
+		System.out.println("   a b c d e f g h"); //Imprime a parte de cima do tabuleiro
 		System.out.println();
 		for (int i = 0; i < pieces.length; i++) {
-			System.out.print((8 - i) + "  "); // imprimi primeiro os números do tabuleiro
+			System.out.print(" " + (8 - i) + "  "); // imprimi primeiro os números do tabuleiro
 			for (int j = 0; j < pieces.length; j++) { // imprimi a peça.
 				printPiece(pieces[i][j], possibleMoves[i][j]); //imprime as peças nas posições, mas com o fundo colorido indicando as futuras posições possíveis
 			}
@@ -111,4 +116,20 @@ public class UI {
         }
         System.out.print(" ");
 	}
+	
+	private static void printCapturedPieces(List<ChessPiece> captured) { //método para imprimir as peças capturadas. Recebe uma lista de peças capturadas
+		List <ChessPiece> white = captured.stream().filter(x -> x.getColor()== Color.WHITE).collect(Collectors.toList()); // Cria uma lista de peças capturadas brancas, com filtro com a função Lambda.
+		List <ChessPiece> black = captured.stream().filter(x -> x.getColor()== Color.BLACK).collect(Collectors.toList()); // Cria uma lista de peças capturadas pretas, com filtro com a função Lambda.
+	System.out.println(" Captured pieces:");
+	System.out.print(" White: ");
+	System.out.print(ANSI_WHITE);
+	System.out.println(Arrays.toString(white.toArray())); //Imprime um array de valores (lista de peças brancas)
+	System.out.print(ANSI_RESET);
+	System.out.print(" Black: ");
+	System.out.print(ANSI_YELLOW);
+	System.out.println(Arrays.toString(black.toArray())); //Imprime um array de valores (lista de peças pretas)
+	System.out.print(ANSI_RESET);
+	System.out.println();
+	}
+	
 }
