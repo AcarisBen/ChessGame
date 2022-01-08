@@ -5,8 +5,10 @@ import boardgame.Piece;
 import boardgame.Position;
 
 public abstract class ChessPiece extends Piece { //Ao transformar o Piece em abstrata, deve alterar tbm a "ChessPiece"
+	
 	private Color color;
-
+	private int moveCount;
+	
 	public ChessPiece(Board board, Color color) {
 		super(board);
 		this.color = color;
@@ -14,6 +16,19 @@ public abstract class ChessPiece extends Piece { //Ao transformar o Piece em abs
 
 	public Color getColor() { // Não tem setColor por que não pode deixar alterar a cor.
 		return color;
+	}
+	
+	public void increaseMoveCount() { //incrementa a contagem dos movimentos das peças
+		moveCount++;
+	}
+	
+	public void decraseMoveCount() { //diminui a contagem dos movimentos das peças
+		moveCount--;
+	}
+	
+	
+	public int getMoveCount() {
+		return moveCount;
 	}
 
 	public ChessPosition getChessPosition() { 
@@ -25,4 +40,6 @@ public abstract class ChessPiece extends Piece { //Ao transformar o Piece em abs
 		ChessPiece p = (ChessPiece)getBoard().piece(position); //Verifica se tem uma peça adversária na posição. Deve fazer um Downcasting para "ChessPiece"
 		return p !=null && p.getColor() != color; //Testa se tem uma peça na posição e se a cor da peça na p.position (peça sendo capturada) é diferente da que está sendo mexida
 	}
+	
+	
 }

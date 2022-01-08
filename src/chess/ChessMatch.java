@@ -94,7 +94,8 @@ public class ChessMatch { // Regras do jogo
 		}
 	
 	private Piece makeMove(Position source, Position target) { //Lógica de realizar um movimento baseado na posição de origem e de destino
-		Piece p = board.removePiece(source); // Retira a peça na posição de origem
+		ChessPiece p = (ChessPiece)board.removePiece(source);//Faz um DownCasting para "ChessPiece" para poder acrescentar a contagem dos movimentos. Era assim: Piece p = board.removePiece(source); // Retira a peça na posição de origem
+		p.increaseMoveCount();//incrementa a contagem dos movimentos das peças
 		Piece capturedPiece = board.removePiece(target); //Remove a peça que está na posição de destino (Peça capturada)
 		board.placePiece(p, target); // Coloca a peça "p" na posição da peça de destino.
 		
@@ -107,7 +108,8 @@ public class ChessMatch { // Regras do jogo
 	}
 	
 	private void undoMove(Position source, Position target, Piece capturedPiece) { //Método para desfazer o movimento makeMove, para não por o rei em xeque.
-		Piece p = board.removePiece(target); // Cria uma peça para remove-la da posição de destino
+		ChessPiece p = (ChessPiece)board.removePiece(target);// Faz um "DownCasting" para "ChessPiece" para poder diminuir a contagem dos movimentos. Era assim: Piece p = board.removePiece(target); // Cria uma peça para remove-la da posição de destino
+		p.decraseMoveCount(); // diminui a contagem dos movimentos das peças
 		board.placePiece(p, source); // coloca a peça para a posição de destino
 		
 		if (capturedPiece != null) { // uma peça tinha sido capturada,

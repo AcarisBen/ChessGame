@@ -24,8 +24,7 @@ public class Program {
 				System.out.println();
 				UI.printMatch(chessMatch, captured); //Imprime o tabuleiro, o turno e a vez dedeterminado jogador e a lista de peças capturadas
 				// UI.printBoard(chessMatch.getPieces()); // Antes era uma Função para imprimir as peças e o tabuleiro da partida.
-				// UI = classe user interface. printBoard = método da classe UI para imprimir as
-				// peças da partida
+				// UI = classe user interface. printBoard = método da classe UI para imprimir as peças da partida
 
 				System.out.println();
 				System.out.print(" Source: ");
