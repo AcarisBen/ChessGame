@@ -2,13 +2,13 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
 import chess.pieces.King;
+import chess.pieces.Pawn;
 import chess.pieces.Rook;
 
 public class ChessMatch { // Regras do jogo
@@ -202,19 +202,29 @@ public class ChessMatch { // Regras do jogo
 		piecesOnTheBoard.add(piece); // Adiciona uma peça para a lista "piecesOnTheBoard"
 	}
 	private void initialSetup() { //Assim que iniciará no tabuleiro
-		placeNewPiece('c', 1, new Rook(board, Color.WHITE));
-        placeNewPiece('c', 2, new Rook(board, Color.WHITE));
-        placeNewPiece('d', 2, new Rook(board, Color.WHITE));
-        placeNewPiece('e', 2, new Rook(board, Color.WHITE));
-        placeNewPiece('e', 1, new Rook(board, Color.WHITE));
-        placeNewPiece('d', 1, new King(board, Color.WHITE));
+		placeNewPiece('a', 1, new Rook(board, Color.WHITE)); // Coloca a torre branca na posição "a1"
+        placeNewPiece('e', 1, new King(board, Color.WHITE));// Coloca o rei branco na posição "e1"
+        placeNewPiece('h', 1, new Rook(board, Color.WHITE));// Coloca a torre branca na posição "h1"
+        placeNewPiece('a', 2, new Pawn(board, Color.WHITE));// Coloca o peão branco na posição "a2"
+        placeNewPiece('b', 2, new Pawn(board, Color.WHITE));// Coloca o peão branco na posição "b2"
+        placeNewPiece('c', 2, new Pawn(board, Color.WHITE));// Coloca o peão branco na posição "c2"
+        placeNewPiece('d', 2, new Pawn(board, Color.WHITE));// Coloca o peão branco na posição "d2"
+        placeNewPiece('e', 2, new Pawn(board, Color.WHITE));// Coloca o peão branco na posição "e2"
+        placeNewPiece('f', 2, new Pawn(board, Color.WHITE));// Coloca o peão branco na posição "f2"
+        placeNewPiece('g', 2, new Pawn(board, Color.WHITE));// Coloca o peão branco na posição "g2"
+        placeNewPiece('h', 2, new Pawn(board, Color.WHITE));// Coloca o peão branco na posição "h2"
 
-        placeNewPiece('c', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('c', 8, new Rook(board, Color.BLACK));
-        placeNewPiece('d', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('e', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('e', 8, new Rook(board, Color.BLACK));
-        placeNewPiece('d', 8, new King(board, Color.BLACK));
+        placeNewPiece('a', 8, new Rook(board, Color.BLACK));// Coloca a torre branca na posição "a8"
+        placeNewPiece('e', 8, new King(board, Color.BLACK));// Coloca o rei preto na posição "e8"
+        placeNewPiece('h', 8, new Rook(board, Color.BLACK));// Coloca a torre branca na posição "h8"
+        placeNewPiece('a', 7, new Pawn(board, Color.BLACK));// Coloca o peão branco na posição "a7"
+        placeNewPiece('b', 7, new Pawn(board, Color.BLACK));// Coloca o peão branco na posição "b7"
+        placeNewPiece('c', 7, new Pawn(board, Color.BLACK));// Coloca o peão branco na posição "c7"
+        placeNewPiece('d', 7, new Pawn(board, Color.BLACK));// Coloca o peão branco na posição "d7"
+        placeNewPiece('e', 7, new Pawn(board, Color.BLACK));// Coloca o peão branco na posição "e7"
+        placeNewPiece('f', 7, new Pawn(board, Color.BLACK));// Coloca o peão branco na posição "f7"
+        placeNewPiece('g', 7, new Pawn(board, Color.BLACK));// Coloca o peão branco na posição "g7"
+        placeNewPiece('h', 7, new Pawn(board, Color.BLACK));// Coloca o peão branco na posição "h7"
         }
 }
 
