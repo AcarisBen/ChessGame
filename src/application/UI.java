@@ -88,7 +88,7 @@ public class UI {
 	
 	public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) { // Sobrecarga do métoda acima, mas com a matriz booleana "possibleMoves" para mostrar as possíveis posições da peça selecionada.
 		System.out.println();
-		System.out.println("   a b c d e f g h"); //Imprime a parte de cima do tabuleiro
+		System.out.println("    a b c d e f g h"); //Imprime a parte de cima do tabuleiro
 		System.out.println();
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print(" " + (8 - i) + "  "); // imprimi primeiro os números do tabuleiro
@@ -101,7 +101,7 @@ public class UI {
 		
 		}
 		System.out.println();
-		System.out.println("   a b c d e f g h"); // imprimi a parte de baixo do tabuleiro
+		System.out.println("    a b c d e f g h"); // imprimi a parte de baixo do tabuleiro
 	}
 
 	private static void printPiece(ChessPiece piece, boolean background) { // Método para imprimir a peça no tabuleiro.
