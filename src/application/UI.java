@@ -13,8 +13,7 @@ import chess.Color;
 
 public class UI {
 
-	// Código copiado do Stackoverflow para alteração das cores do texto e do fundo
-	// no Git Bash
+	// Código copiado do Stackoverflow para alteração das cores do texto e do fundo no Git Bash
 	// https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
 
 	public static final String ANSI_RESET = "\u001B[0m";
@@ -57,16 +56,21 @@ public class UI {
 		printBoard(chessMatch.getPieces()); //Imprime o tabuleiro
 		System.out.println();//Pula linha
 		printCapturedPieces(captured);
-		System.out.println(" Turn: " + chessMatch.getTurn()); //Informa o turno que está
-		System.out.println(" Waiting player: " + chessMatch.getCurrentPlayer()); // Mensagem que está esperando o jogador jogar.
-		if (chessMatch.getCheck()) { // Testa se a partida esta em xeque.
-			System.out.println();
-			System.out.println(" YOU ARE IN CHECK!"); // Acrescenta a informação de xeque
+		if (!chessMatch.getCheckMate()) { //Enquanto não tem xeque-mate
+			System.out.println(" Turn: " + chessMatch.getTurn()); //Informa o turno que está
+			System.out.println(" Waiting player: " + chessMatch.getCurrentPlayer()); // Mensagem que está esperando o jogador jogar.
+			if (chessMatch.getCheck()) { // Testa se a partida esta em xeque.
+				System.out.println();
+				System.out.println(" YOU ARE IN CHECK!"); // Acrescenta a informação de xeque
+			}
+		} else {
+			System.out.println("CHECKMATE!!!");
+			System.out.println("Winner: " + chessMatch.getCurrentPlayer());
 		}
 	}
-		
+	
 	public static void printBoard(ChessPiece[][] pieces) { // Método para imprimir as peças da partida.
-		System.out.println("   a b c d e f g h"); //Imprime a parte de cima do tabuleiro
+		System.out.println("    a b c d e f g h"); //Imprime a parte de cima do tabuleiro
 		System.out.println();
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print(" " + (8 - i) + "  "); // imprimi primeiro os números do tabuleiro
@@ -79,7 +83,7 @@ public class UI {
 		
 		}
 		System.out.println();
-		System.out.println("   a b c d e f g h"); // imprimi a parte de baixo do tabuleiro
+		System.out.println("    a b c d e f g h"); // imprimi a parte de baixo do tabuleiro
 	}
 	
 	public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) { // Sobrecarga do métoda acima, mas com a matriz booleana "possibleMoves" para mostrar as possíveis posições da peça selecionada.

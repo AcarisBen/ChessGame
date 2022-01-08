@@ -17,6 +17,7 @@ public class ChessMatch { // Regras do jogo
 	private Color currentPlayer;
 	private Board board;
 	private boolean check;
+	private boolean checkMate;
 	
 	private List<Piece> piecesOnTheBoard = new ArrayList<>(); //Instacia uma lista para controlar as peças restantes do tabuleiro
 	private List<Piece> capturedPieces = new ArrayList<>(); // Instancia uma lista para controlar as peças capturadas.
@@ -41,6 +42,12 @@ public class ChessMatch { // Regras do jogo
 	public boolean getCheck () { // expõe a propriedade de xeque para que possa ser alcançado pelo programa principal 
 		return check;
 	}
+	
+	
+	public boolean getCheckMate() {
+		return checkMate;
+	}
+
 	public ChessPiece[][] getPieces() { // Retorna a matriz de peças de xadrez correspondente a partida.
 	
 	// O "Board" tem uma matriz do tipo "Piece", mas o método retorna o "ChessPiece" (Camada de xadrez).
@@ -78,7 +85,11 @@ public class ChessMatch { // Regras do jogo
 		
 		check = (testCheck(opponent(currentPlayer))) ? true : false; // Testa se o opponent está em xeque.
 		// se o teste de xeque do oponente for "true" então o opponente está em xeque, se não retorna "false"
-		nextTurn(); // Chama o próximo turno.
+		if (testCheckMate(opponent(currentPlayer))) {//testa se a jogada feita, deixa o outro jogador em xeque-mate.
+			checkMate = true; //Passa a variável checkMate para true. O jogador recebeu xeque-mate
+		} else {
+			nextTurn(); // Chama o próximo turno.
+		}
 		return (ChessPiece) capturedPiece; // Retorna a peça capturada, com DownCasting da peça capturada do tipo "ChessPiece"
 		}
 	
@@ -137,7 +148,7 @@ public class ChessMatch { // Regras do jogo
 	}
 	
 	private ChessPiece king (Color color) { // Método para localizar o rei de uma determinada cor
-		List < Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());//Procura na lista de peças em jogo qual é o rei dessa cor.
+		List < Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());//Procura na lista de peças em jogo qual são as peças dessa cor.
 		for (Piece p : list) {//Pra cada peça "p" na lista "List"
 			if (p instanceof King) { // se a peça "p" é uma instancia do Rei
 				return (ChessPiece)p; // // retorna o Rei (DownCasting) para "ChessPiece"
@@ -155,6 +166,33 @@ public class ChessMatch { // Regras do jogo
 			}
 		}
 		return false; // se esgotar todas as peças adversárias e nenhuma dessas peças tiver na matriz de movimentos possíveis, a posição do rei marcada como "true", o rei não está em xeque.
+	}
+	
+	private boolean testCheckMate (Color color) { //Testa se o rei está em xeque-mate
+		if (!testCheck(color)) { // Se o rei não estiver em xeque, ele não pode estar em xeque-mate
+			return false; //retorna falso
+		}
+		List < Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());//Procura na lista de peças em jogo quais são as peças dessa cor.
+		// se todas as peças dessa cor, não terem um movimento possível para sair do xeque, esta cor está em xeque-mate.
+		for (Piece p : list) { // percorre todas as peças pertencentes a cor da lista
+		// se existir alguma peça "p" na lista "list" que possua um movimento que tira do xeque, retorna false (A cor não está em xeque-mate). Se esgotar o "for" e não encontrar nenhum movimento que possa sair do xeque), então é xeque-mate.
+			boolean [][] mat = p.possibleMoves(); //Matriz de booleanos recebendo os movimentos possíveis da peça "p"
+			for (int i=0; i<board.getRows(); i++) { // Percorre as linhas da matriz
+				for (int j=0; j<board.getColumns(); j++) { //Percorre as colunas da matriz
+					if (mat[i][j]) { //Para cada elemento da matriz, testa se o mmovimento possível para tirar do xeque,
+						Position source = ((ChessPiece)p).getChessPosition().toPosition();//Pega a posição da peça "p", na posição de origem("source"). Position é um atributo "protected". Então essa classe não tem permissão para acessa-la. Por isso deve ser feito um "DownCasting" para "ChessPiece", onde a partir dessa posição no formato "ChessPiece" pode chamar o "ChessPosition" 
+						Position target = new Position(i, j); //Leva a peça "p" para a posição de destino ("target") da matriz [i][j], que seria um movimento possível.
+						Piece capturedPiece = makeMove(source, target); // Faz o movimento da peça "p" a partir da posição "source" para "target" (de origem par o destino.
+						boolean testCheck = testCheck(color);//Testa se o rei daquela cor ainda está em xeque. Cria uma variável auxiliar booleana, e faz ela receber a chamada do testCheck 
+						undoMove(source, target, capturedPiece); // Desfaz o movimento para que não atrapalhe os movimentos das peças.
+						if (!testCheck) { // testa se não estava em xeque. ou seja retirou o rei do xeque.
+							return false; // se retira o rei do xeque, retorna falso.
+						}
+					}
+				}
+			}
+		}
+		return true; // retorna "true", a cor está em xeque-mate.
 	}
 	
 	private void placeNewPiece(char column, int row, ChessPiece piece) { //Operação de colocar as peças. Recebe as coordenadas do xadrez.

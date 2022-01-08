@@ -18,7 +18,7 @@ public class Program {
 		ChessMatch chessMatch = new ChessMatch();
 		List <ChessPiece> captured = new ArrayList<>();
 
-		while (true) { // REPETE indefinitamente,
+		while (!chessMatch.getCheckMate()) { // REPETE indefinitamente, até que não tenha um xeque-mate
 			try {
 				UI.clearScreen();
 				System.out.println();
@@ -54,7 +54,8 @@ public class Program {
 				sc.nextLine();
 			}
 		}
-
+		UI.clearScreen();
+		UI.printMatch(chessMatch, captured);
 	}
 
 }
