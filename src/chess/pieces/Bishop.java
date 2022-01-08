@@ -5,6 +5,7 @@ import boardgame.Position;
 import chess.ChessPiece;
 import chess.Color;
 
+	//O bispo copia os movimentos da torre, mas altera as casas para diagonal.
 public class Bishop extends ChessPiece { // Classe que extede da classe "ChessPiece", que extende a classe "Piece"
 
 	public Bishop(Board board, Color color) { // Constructor que pega o "color" da classe "ChessPiece" e o "board" da classe "piece" 

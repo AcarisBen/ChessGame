@@ -5,6 +5,7 @@ import boardgame.Position;
 import chess.ChessPiece;
 import chess.Color;
 
+	//O cavalo copia os movimentos do rei com soment a alteração da quantidade de casas que pula
 public class Knight extends ChessPiece { // Classe que extede a classe "ChessPiece", que extende a classe "Piece"
 
 
