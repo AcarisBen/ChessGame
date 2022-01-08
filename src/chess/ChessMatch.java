@@ -209,7 +209,7 @@ public class ChessMatch { // Regras do jogo
 		placeNewPiece('b', 1, new Knight(board, Color.WHITE)); // Coloca o cavalo branco na posição "b1"
 		placeNewPiece('c', 1, new Bishop(board, Color.WHITE)); // Coloca o bispo branco na posição "c1"
 		placeNewPiece('d', 1, new Queen(board, Color.WHITE)); // Coloca a rainha branca na posição "d1"
-		placeNewPiece('e', 1, new King(board, Color.WHITE));// Coloca o rei branco na posição "e1"
+		placeNewPiece('e', 1, new King(board, Color.WHITE, this));// Coloca o rei branco na posição "e1". Da um erro no rei, POIS ELE PRECISA INFORMAR qual partida que seria. (This - essa partida)
 		placeNewPiece('f', 1, new Bishop(board, Color.WHITE)); // Coloca a torre branca na posição "f1"
 		placeNewPiece('g', 1, new Knight(board, Color.WHITE)); // Coloca o cavalo branco na posição "g1"
 		placeNewPiece('h', 1, new Rook(board, Color.WHITE));// Coloca a torre branca na posição "h1"
@@ -226,7 +226,7 @@ public class ChessMatch { // Regras do jogo
         placeNewPiece('b', 8, new Knight(board, Color.BLACK)); // Coloca o cavalo preto na posição "b8"
 		placeNewPiece('c', 8, new Bishop(board, Color.BLACK)); // Coloca o bispo preto na posição "c8"
 		placeNewPiece('d', 8, new Queen(board, Color.BLACK)); // Coloca a rainha branca na posição "d8"
-		placeNewPiece('e', 8, new King(board, Color.BLACK));// Coloca o rei preto na posição "e8"
+		placeNewPiece('e', 8, new King(board, Color.BLACK, this));// Coloca o rei preto na posição "e8". Da um erro no rei, POIS ELE PRECISA INFORMAR qual partida que seria. (This - essa partida)
         placeNewPiece('f', 8, new Bishop(board, Color.BLACK)); // Coloca o bispo preto na posição "f8"
         placeNewPiece('g', 8, new Knight(board, Color.BLACK)); // Coloca o cavalo preto na posição "g8"
 		placeNewPiece('h', 8, new Rook(board, Color.BLACK));// Coloca a torre branca na posição "h8"
