@@ -106,8 +106,25 @@ public class ChessMatch { // Regras do jogo
 			piecesOnTheBoard.remove(capturedPiece); // remove a peça capturada da lista de peças no tabuleiro.
 			capturedPieces.add(capturedPiece); // adiciona a peça capturada na lista de peças capturadas
 		}
-		
-		return capturedPiece; //retorna a peça capturada.
+		// #specialmove castling kingside rook - tratar o movimento do roque pequeno mexendo a torre manualmente
+		if (p instanceof King && target.getColumn() == source.getColumn() + 2) { //Se a peça "p" for uma instancia de rei e a posição da peça no destino for = a duas casas depois da posição de origem à direira.
+			Position sourceT = new Position(source.getRow(), source.getColumn() + 3); // Posição de origem da torre antes do Roque
+			Position targetT = new Position(source.getRow(), source.getColumn() + 1); // Posição de destino da torre após o Roque
+			ChessPiece rook = (ChessPiece)board.removePiece(sourceT); // Remove a torre da posição dela de origem
+			board.placePiece(rook, targetT); // coloca a torre na posição de destino dela 
+			rook.increaseMoveCount(); // conta um movimento a mais para a torre
+		}
+			
+			// #specialmove castling queenside rook - tratar o movimento do roque grande mexendo a torre manualmente
+			if (p instanceof King && target.getColumn() == source.getColumn() - 2) { //Se a peça "p" for uma instancia de rei e a posição da peça no destino for = a duas casas depois da posição de origem à esquerda.
+				Position sourceT = new Position(source.getRow(), source.getColumn() - 4); // Posição de origem da torre antes do Roque
+				Position targetT = new Position(source.getRow(), source.getColumn() - 1); // Posição de destino da torre após o Roque
+				ChessPiece rook = (ChessPiece)board.removePiece(sourceT); // Remove a torre da posição dela de origem
+				board.placePiece(rook, targetT); // coloca a torre na posição de destino dela 
+				rook.increaseMoveCount(); // conta um movimento a mais para a torre
+			}
+				
+			return capturedPiece; //retorna a peça capturada.
 	}
 	
 	private void undoMove(Position source, Position target, Piece capturedPiece) { //Método para desfazer o movimento makeMove, para não por o rei em xeque.
@@ -120,7 +137,27 @@ public class ChessMatch { // Regras do jogo
 			capturedPieces.remove(capturedPiece); // Tira a peça da lista de pecças capturadas.
 			piecesOnTheBoard.add(capturedPiece); // Coloca a peça na lista de peças no tabuleiro.
 		}
+		
+		// #specialmove castling kingside rook - desfaz o movimento do roque pequeno 
+				if (p instanceof King && target.getColumn() == source.getColumn() + 2) { //Se a peça "p" for uma instancia de rei e a posição da peça no destino for = a duas casas depois da posição de origem à direira.
+					Position sourceT = new Position(source.getRow(), source.getColumn() + 3); // Posição de origem da torre antes do Roque
+					Position targetT = new Position(source.getRow(), source.getColumn() + 1); // Posição de destino da torre após o Roque
+					ChessPiece rook = (ChessPiece)board.removePiece(targetT); // Remove a torre da posição dela de destino
+					board.placePiece(rook, sourceT); // coloca a torre na posição de origem de volta dela 
+					rook.decraseMoveCount(); // tira um movimento para a torre
+				}
+					
+					// #specialmove castling queenside rook - tratar o movimento do roque grande mexendo a torre manualmente
+					if (p instanceof King && target.getColumn() == source.getColumn() - 2) { //Se a peça "p" for uma instancia de rei e a posição da peça no destino for = a duas casas depois da posição de origem à esquerda.
+						Position sourceT = new Position(source.getRow(), source.getColumn() - 4); // Posição de origem da torre antes do Roque
+						Position targetT = new Position(source.getRow(), source.getColumn() - 1); // Posição de destino da torre após o Roque
+						ChessPiece rook = (ChessPiece)board.removePiece(targetT); // Remove a torre da posição dela de destino
+						board.placePiece(rook, sourceT); // coloca a torre na posição de origem dela 
+						rook.decraseMoveCount(); // tira um movimento para a torre
+					}
 	}
+	
+	
 	
 	private void validateSourcePosition(Position position) { // Exceção para testar se existe uma peça na posição de origem 
 		if (!board.thereIsAPiece(position)) {

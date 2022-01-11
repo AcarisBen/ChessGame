@@ -28,7 +28,7 @@ public class King extends ChessPiece { // Classe que extede a classe "ChessPiece
 	
 	private boolean testRookCastling (Position position) { // Método para auxiliar a condição da torre para Roque
 		ChessPiece p = (ChessPiece)getBoard().piece(position); //declara a variável "p" recebendo a peça na posição "position"
-		return p != null && p instanceof Rook & p.getColor() == getColor() && p.getMoveCount() == 0; // testa e retorna se a peça é diferente de nulo, se ela é uma torre , se a peça é da mesma cor e que ainda não houve movimento com ela.
+		return p != null && p instanceof Rook && p.getColor() == getColor() && p.getMoveCount() == 0; // testa e retorna se a peça é diferente de nulo, se ela é uma torre , se a peça é da mesma cor e que ainda não houve movimento com ela.
 	}
 	
 	
@@ -93,7 +93,7 @@ public class King extends ChessPiece { // Classe que extede a classe "ChessPiece
 				 Position p1 = new Position(position.getRow(), position.getColumn() + 1); // Testa se a casa a direita do rei está vazia
 				 Position p2 = new Position(position.getRow(), position.getColumn() + 2); // Testa se a casa a esquerda da torre está vazia
 				 if (getBoard().piece(p1) == null && getBoard().piece(p2) == null) { // Testa se não há peças ocupando as casas do meio entre a torre e o rei
-					mat[position.getRow()][position.getRow() +2] = true; // inclui na matriz de movimentos possíveis o movimento do rei Roque
+					mat[position.getRow()][position.getColumn() + 2] = true; // inclui na matriz de movimentos possíveis o movimento do rei Roque
 				 }
 			 }
 			 
@@ -104,7 +104,7 @@ public class King extends ChessPiece { // Classe que extede a classe "ChessPiece
 				 Position p2 = new Position(position.getRow(), position.getColumn() - 2); // Testa se a casa do meio entre a torre e o rei está vazia
 				 Position p3 = new Position(position.getRow(), position.getColumn() - 3); // Testa se a casa a direita da torre está vazia
 				 if (getBoard().piece(p1) == null && getBoard().piece(p2) == null && getBoard().piece(p3) == null) { // Testa se não há peças ocupando as casas do meio entre a torre e o rei
-					mat[position.getRow()][position.getRow() - 2] = true; // inclui na matriz de movimentos possíveis o movimento do rei Roque
+					mat[position.getRow()][position.getColumn() - 2] = true; // inclui na matriz de movimentos possíveis o movimento do rei Roque
 				 }
 			 }
 		 }
