@@ -1,6 +1,5 @@
 package chess;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -133,7 +132,8 @@ public class ChessMatch { // Regras do jogo
 			 throw new IllegalStateException("There is no piece to be promoted"); // Esse método é chamado qdo o usuário fizer a escolha da peça. Então tem que ter peça indicando que tem peça a ser promovida.
 		}
 		if (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) { //As letras "B, N, R, e Q" são as únicas possíveis. A operação equals serve para comparar se um String é igual a outro. Já que o String é um tipo classe e não o tipo primitivo
-			throw new InvalidParameterException("Invalid type for promotion");
+			// Antes estava assim, mas não foi tratada esta exceção: throw new InvalidParameterException("Invalid type for promotion");
+			return promoted; //Retorna o valor da variável "promoted" que, por padrão, é a rainha.
 		}
 		
 		Position pos = promoted.getChessPosition().toPosition(); // Chama a posição da peça promovida

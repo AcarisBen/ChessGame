@@ -44,8 +44,12 @@ public class Program {
 				}
 				
 				if (chessMatch.getPromoted() != null) { // Se nessa partida, ocorrer uma promoção.
-					System.out.print("Promotion! Please, enter the piece for promotion (B/N/R/Q): "); //Pergunta pro jogador qual peça ele quer adicionar
-					String type = sc.nextLine(); //jogador deve decidir qual peça
+					System.out.print("Promotion! Please, enter the piece for promotion (B/N/Q/R): "); //Pergunta pro jogador qual peça ele quer adicionar
+					String type = sc.nextLine().toUpperCase(); //jogador deve decidir qual peça e será alterado para letra maiúscula
+					while (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) { //Enquanto não digitar uma das letras
+						System.out.print("Invalid value! Please, enter the piece for promotion (B/N/Q/R): "); //Pergunta pro jogador qual peça ele quer adicionar
+						type = sc.nextLine().toUpperCase(); //jogador deve decidir qual peça e será alterado para letra maiúscula	
+					}
 					chessMatch.replacePromotedPiece(type); //Troca a peça no método "replacePromotedPiece"
 				}
 			
