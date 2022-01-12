@@ -1,5 +1,6 @@
 package chess;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class ChessMatch { // Regras do jogo
 	private boolean check;
 	private boolean checkMate;
 	private ChessPiece enPassantVulnerable;
+	private ChessPiece promoted;
 	
 	private List<Piece> piecesOnTheBoard = new ArrayList<>(); //Instacia uma lista para controlar as peças restantes do tabuleiro
 	private List<Piece> capturedPieces = new ArrayList<>(); // Instancia uma lista para controlar as peças capturadas.
@@ -53,6 +55,10 @@ public class ChessMatch { // Regras do jogo
 
 	public ChessPiece getEnPassantVulnerable() { // Getter do en Passant começa null por não ter nenhuma peça vulnerável para o próximo turno, então não inicia ela no constructor.
 		return enPassantVulnerable;
+	}
+	
+	public ChessPiece getPromoted() {
+		return promoted;
 	}
 
 	public ChessPiece[][] getPieces() { // Retorna a matriz de peças de xadrez correspondente a partida.
@@ -93,6 +99,17 @@ public class ChessMatch { // Regras do jogo
 		
 		ChessPiece movedPiece = (ChessPiece)board.piece(target); // Variável para a peça que foi para o "target" (Movimento en Passant)
 		
+		// #specialMove promotion - testa a lógica para fazer o peão ser promovido
+		promoted = null; // faz com que toda vez seja feito um novo teste.
+		if (movedPiece instanceof Pawn) { // Se a peça movida for uma instancia do pião 
+			if ((movedPiece.getColor() == Color.WHITE && target.getRow() == 0) || (movedPiece.getColor() == Color.BLACK && target.getRow() == 7)) {
+				// Testa se a peça movida (pião) é da cor branca e se ela chegou até o final (da matriz seria posíção 0) ou se é um pião preto e chegou ao final (posição 7 da  matriz)
+			promoted = (ChessPiece)board.piece(target); // a variável "promoted" receberá a peça que estiver na posição de destino. precisa ter uma peça nessa posição para que haja a pormoção. Se não o valor da variável promoted será null.
+			promoted = replacePromotedPiece("Q"); // a variável "promoted" receberá a letra "Q" como argumento do método  método "replacePromotedPiece"
+			}
+			
+		}
+		
 		check = (testCheck(opponent(currentPlayer))) ? true : false; // Testa se o opponent está em xeque.
 		// se o teste de xeque do oponente for "true" então o opponente está em xeque, se não retorna "false"
 		if (testCheckMate(opponent(currentPlayer))) {//testa se a jogada feita, deixa o outro jogador em xeque-mate.
@@ -109,6 +126,31 @@ public class ChessMatch { // Regras do jogo
 		}
 	
 		return (ChessPiece) capturedPiece; // Retorna a peça capturada, com DownCasting da peça capturada do tipo "ChessPiece"
+		}
+	
+	public ChessPiece replacePromotedPiece(String type) { // Método para trocar o pião por uma outra peça no movimento promoção
+		if (promoted == null) { // Quando a variável "promoted" for nula, não poderá trocar a peça promovida. 
+			 throw new IllegalStateException("There is no piece to be promoted"); // Esse método é chamado qdo o usuário fizer a escolha da peça. Então tem que ter peça indicando que tem peça a ser promovida.
+		}
+		if (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) { //As letras "B, N, R, e Q" são as únicas possíveis. A operação equals serve para comparar se um String é igual a outro. Já que o String é um tipo classe e não o tipo primitivo
+			throw new InvalidParameterException("Invalid type for promotion");
+		}
+		
+		Position pos = promoted.getChessPosition().toPosition(); // Chama a posição da peça promovida
+		Piece p = board.removePiece(pos); // A variável "p" guarda a peça que foi removida na posição "pos"
+		piecesOnTheBoard.remove(p); // Remove a peça "p" da lista de peças do tabuleiro
+		ChessPiece newPiece = newPiece(type, promoted.getColor()); // Instancia uma nova peça comforme o "type"
+		board.placePiece(newPiece, pos); // coloca uma nova peça no lugar da peça removida.
+		piecesOnTheBoard.add(newPiece); // adiciona a nova peça para a lista de peças do tabuleiro
+		
+		return newPiece; // retorna a nova peça instanciada
+	}
+	
+	private ChessPiece newPiece(String type, Color color) { // Método para criar uma nova peça baseada no String solicitado e na cor do jogador que fizer a promoção
+		if (type.equals("B")) return new Bishop(board, color); // Se colocar "B" será um novo bispo
+		if (type.equals("N")) return new Knight(board, color); // Se colocar "N" será um novo cavalo
+		if (type.equals("Q")) return new Queen(board, color); //Se colocar "Q" será um novo rainha
+		return new Rook(board, color); // Se não colocar nenhuma das outras letras, será colocado uma nova torre
 		}
 	
 	private Piece makeMove(Position source, Position target) { //Lógica de realizar um movimento baseado na posição de origem e de destino
